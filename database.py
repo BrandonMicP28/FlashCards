@@ -1,0 +1,29 @@
+import sqlite3
+
+def create_database():
+    with sqlite3.connect('database.db') as connection:
+        c = connection.cursor()
+        c.execute('''CREATE TABLE IF NOT EXISTS cards (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        question TEXT,
+        answer TEXT,
+        knowledge INTEGER)''')
+
+def add_card_to_db(question, answer):
+    with sqlite3.connect('database.db') as connection:
+        c = connection.cursor()
+        c.execute('INSERT INTO cards (question, answer, knowledge) VALUES (?, ?, ?)', (question, answer, 0))
+
+def num_of_cards_in_db() -> int:
+    with sqlite3.connect('database.db') as connection:
+        c = connection.cursor()
+        c.execute("SELECT COUNT(*) FROM cards")
+        result = c.fetchone()[0]
+        return result
+
+def get_card_from_db(index: int) -> tuple:
+    with sqlite3.connect('database.db') as connection:
+        c = connection.cursor()
+
+
+create_database()
