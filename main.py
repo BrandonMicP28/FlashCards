@@ -1,8 +1,5 @@
 import tkinter as tk
-from tkinter import ttk, messagebox
-import database
-from database import add_card_to_db
-from flashcard import start_flashcard
+from tkinter import ttk
 from homescreen import enter_homescreen
 
 if __name__ == '__main__':

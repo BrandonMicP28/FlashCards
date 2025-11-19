@@ -2,26 +2,48 @@ import database
 from database import num_of_cards_in_db, get_cards_from_db
 from tkinter import ttk
 
-def flip_card():
-    global is_flipped
-    is_flipped = not is_flipped
+class FlashcardApp:
+    def __init__(self, root, num_of_cards: int = min(num_of_cards_in_db(), 100), type = "random"):
+        self.root = root
+        self.num_of_cards = num_of_cards
+        self.type = type
+        self.cards = get_cards_from_db(self.num_of_cards)
+        self.is_flipped = False
+        self.current_card = 0
 
-    if is_flipped:
-        flashcard.configure(text=f"{cards[current_card + 1]}")
-    else:
-        flashcard.configure(text=f"{cards[current_card]}")
+        self.flashcard_button = None
+        self.know_button = None
+        self.unknown_button = None
 
-def start_flashcard(root, num_of_cards: int = min(num_of_cards_in_db(), 100), type = "random"):
+    def setup_ui(self):
+        if num_of_cards_in_db() > 0:
+            flashcard_text = self.cards[self.current_card][0]
+        else:
+            flashcard_text = ""
+        self.flashcard_button = ttk.Button(self.root, text=flashcard_text, style="flashcard.TButton", command=self.flip_card)
+        self.flashcard_button.pack(expand=True)
 
-    global cards
-    global flashcard
+        self.know_button = ttk.Button(self.root, text="✅", command=self.next_flashcard)
+        self.know_button.pack(expand=True)
 
-    cards = get_cards_from_db(num_of_cards)
+        self.unknown_button = ttk.Button(self.root, text="❌", command=self.next_flashcard)
+        self.unknown_button.pack(expand=True)
 
-    flashcard = ttk.Button(root, text = f"{cards[current_card]}", style = "flashcard.TButton", command = flip_card)
-    flashcard.pack(expand=True)
+    def new_deck(self):
+        self.cards = get_cards_from_db(self.num_of_cards)
 
-cards: tuple = None
-current_card: int = 0
-is_flipped: bool = False
-flashcard: ttk.Button = None
+
+    def flip_card(self):
+        self.is_flipped = not self.is_flipped
+        self.flashcard_button.configure(text=f"{self.cards[self.current_card][1 if self.is_flipped else 0]}")
+
+    def next_flashcard(self) -> bool:
+        if self.current_card < self.num_of_cards - 1:
+            self.current_card += 1
+        else:
+            return False
+
+        self.is_flipped = False
+
+        self.flashcard_button.configure(text=f"{self.cards[self.current_card][1 if self.is_flipped else 0]}")
+        return True
