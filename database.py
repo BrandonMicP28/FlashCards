@@ -12,7 +12,10 @@ def create_database():
 def add_card_to_db(question, answer):
     with sqlite3.connect('database.db') as connection:
         c = connection.cursor()
-        c.execute('INSERT INTO cards (question, answer, knowledge) VALUES (?, ?, ?)', (question, answer, 0))
+        try:
+            c.execute('INSERT INTO cards (question, answer, knowledge) VALUES (?, ?, ?)', (question, answer, 0))
+        except sqlite3.IntegrityError:
+            return -1
         return c.rowcount
 
 def num_of_cards_in_db() -> int:
