@@ -1,8 +1,9 @@
 from tkinter import ttk
 
 from database import add_card_to_db
-from flashcard import start_flashcard
 import tkinter as tk
+
+from flashcard import FlashcardApp
 
 flashcard_start = None
 addCard = None

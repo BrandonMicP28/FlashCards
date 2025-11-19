@@ -1,4 +1,6 @@
 import sqlite3
+from typing import Any
+
 
 def create_database():
     with sqlite3.connect('database.db') as connection:
@@ -25,7 +27,7 @@ def num_of_cards_in_db() -> int:
         result = c.fetchone()[0]
         return result
 
-def get_cards_from_db(num_of_cards: int, is_sorted = True) -> tuple:
+def get_cards_from_db(num_of_cards: int, is_sorted = True) -> list[tuple]:
     with sqlite3.connect('database.db') as connection:
         c = connection.cursor()
         if is_sorted:
