@@ -1,7 +1,8 @@
 import tkinter as tk
-from tkinter import ttk
+from tkinter import ttk, messagebox
 import database
 from database import add_card_to_db
+from flashcard import start_flashcard
 
 
 def flip_card():
@@ -13,10 +14,15 @@ def add_card_screen():
         answer = answer_entry.get()
         definition = definition_entry.get()
 
-        if answer == "" or definition == "":
+        if answer == "" or definition == "" or add_card_to_db(answer, definition) < 0:
+            status_label = tk.Label(add_card_window, text = "Word Already Entered", foreground="red")
+            status_label.pack()
+            add_card_window.after(3000, status_label.destroy)
             return
 
-        add_card_to_db(answer, definition)
+        status_label = tk.Label(add_card_window, text = "Word Added!", foreground="green")
+        status_label.pack()
+        add_card_window.after(3000, status_label.destroy)
 
     add_card_window = tk.Toplevel(root)
     add_card_window.title("Add Card")
@@ -44,7 +50,7 @@ root.geometry("1280x720")
 root.title("FlashCards")
 root.config(background="#33363b")
 
-flashcard_start = ttk.Button(root, text="Flash Cards?", command=start_flashcard, style="flashcard.TButton")
+flashcard_start = ttk.Button(root, text="Flash Cards?", command=leave_home_screen, style="flashcard.TButton")
 style.configure("flashcard.TButton", font=("Times New Roman", 20), padding=(40,200,40,200))
 flashcard_start.pack(expand=True)
 
