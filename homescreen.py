@@ -54,4 +54,5 @@ def add_card_screen():
 def leave_home_screen():
     flashcard_start.pack_forget()
     addCard.pack_forget()
-    start_flashcard(root)
+    flashcard_app = FlashcardApp(root)
+    flashcard_app.setup_ui()
