@@ -30,7 +30,7 @@ def get_cards_from_db(num_of_cards: int, is_sorted = True) -> tuple:
         c = connection.cursor()
         if is_sorted:
             c.execute('SELECT question, answer FROM cards ORDER BY knowledge ASC LIMIT ?', (num_of_cards,))
-        return c.fetchone()
+        return c.fetchall()
 
 
 create_database()
