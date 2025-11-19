@@ -1,9 +1,10 @@
+from ctypes.wintypes import PWORD, DWORD
 from tkinter import ttk
 
-from database import add_card_to_db
+from database import add_card_to_db, num_of_cards_in_db
 import tkinter as tk
 
-from flashcard import FlashcardApp
+from flashcard_app import FlashcardApp
 
 flashcard_start = None
 addCard = None
@@ -24,10 +25,10 @@ def enter_homescreen(main_root):
 def add_card_screen():
 
     def add_card():
-        answer = answer_entry.get()
+        word = word_entry.get()
         definition = definition_entry.get()
 
-        if answer == "" or definition == "" or add_card_to_db(answer, definition) < 0:
+        if word == "" or definition == "" or add_card_to_db(word, definition) < 0:
             status_label = ttk.Label(add_card_window, text = "Word Already Entered", foreground="red")
             status_label.pack()
             add_card_window.after(3000, status_label.destroy)
@@ -42,9 +43,9 @@ def add_card_screen():
     add_card_window.resizable(False, False)
     add_card_window.geometry("640x640")
 
-    ttk.Label(add_card_window, text="Answer : ").pack()
-    answer_entry = ttk.Entry(add_card_window)
-    answer_entry.pack()
+    ttk.Label(add_card_window, text="Word : ").pack()
+    word_entry = ttk.Entry(add_card_window)
+    word_entry.pack()
 
     ttk.Label(add_card_window, text="Definition : ").pack()
     definition_entry = ttk.Entry(add_card_window)
@@ -55,5 +56,5 @@ def add_card_screen():
 def leave_home_screen():
     flashcard_start.pack_forget()
     addCard.pack_forget()
-    flashcard_app = FlashcardApp(root)
+    flashcard_app = FlashcardApp(root, num_of_cards_in_db())
     flashcard_app.setup_ui()
