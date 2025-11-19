@@ -22,10 +22,11 @@ def num_of_cards_in_db() -> int:
         result = c.fetchone()[0]
         return result
 
-def get_card_from_db(index: int) -> tuple:
+def get_cards_from_db(num_of_cards: int, is_sorted = True) -> tuple:
     with sqlite3.connect('database.db') as connection:
         c = connection.cursor()
-        c.execute('SELECT question, answer FROM cards ORDER BY knowledge ASC LIMIT 1 OFFSET ?', (index,))
+        if is_sorted:
+            c.execute('SELECT question, answer FROM cards ORDER BY knowledge ASC LIMIT ?', (num_of_cards,))
         return c.fetchone()
 
 
