@@ -102,9 +102,9 @@ class FlashcardApp:
         self.cards.pop()
 
         if self.deck_sort == "Unknown":
-            self.cards.sort(key=lambda knowledge: self.current_card.knowledge)
+            self.cards.sort(key=lambda card: card.knowledge)
         elif self.deck_sort == "Known":
-            self.cards.sort(key=lambda knowledge: self.current_card.knowledge, reverse=True)
+            self.cards.sort(key=lambda card: card.knowledge, reverse=True)
         else:
             random.shuffle(self.cards)
 
