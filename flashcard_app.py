@@ -1,6 +1,11 @@
+import random
+
 from flashcard import Flashcard
 from util.database import num_of_cards_in_db, get_cards_from_db, change_word_knowledge
 from tkinter import ttk
+
+from util.text_to_speach import text_to_german
+
 
 class FlashcardApp:
     def __init__(self, root, num_of_cards: int, deck_sort = "Unknown"):
@@ -22,6 +27,7 @@ class FlashcardApp:
         self.flashcard_button = None
         self.know_button = None
         self.unknown_button = None
+        self.speak_button = None
 
     def on_know_click(self):
         if self.current_card.knowledge < 10:
@@ -41,6 +47,10 @@ class FlashcardApp:
         else:
             self.restart_flashcards()
 
+    def on_speak_button_click(self):
+        word = self.current_card.word
+        text_to_german(word)
+
     def setup_ui(self):
         if num_of_cards_in_db() > 0:
             flashcard_text = self.current_card.text_showing()
@@ -48,6 +58,9 @@ class FlashcardApp:
             flashcard_text = ""
         self.flashcard_button = ttk.Button(self.root, text=flashcard_text, style="flashcard.TButton", command=self.on_flashcard_click)
         self.flashcard_button.pack(expand=True)
+
+        self.speak_button = ttk.Button(self.root, text="📢", command=self.on_speak_button_click)
+        self.speak_button.pack(expand=True)
 
         self.know_button = ttk.Button(self.root, text="✅", command=self.on_know_click)
         self.know_button.pack(expand=True)
@@ -79,4 +92,16 @@ class FlashcardApp:
 
     def restart_flashcards(self):
         self.current_card_inx = 0
+        self.resort_cards()
+        for card in self.cards:
+            card.is_flipped = False
+
         self.update_card()
+
+    def resort_cards(self):
+        if self.deck_sort == "Unknown":
+            self.cards.sort(key=lambda knowledge: self.current_card.knowledge)
+        elif self.deck_sort == "Known":
+            self.cards.sort(key=lambda knowledge: self.current_card.knowledge, reverse=True)
+        else:
+            random.shuffle(self.cards)
