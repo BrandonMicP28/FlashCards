@@ -5,7 +5,7 @@ from flashcard import Flashcard
 
 
 def create_database():
-    with sqlite3.connect('../database.db') as connection:
+    with sqlite3.connect('./database.db') as connection:
         c = connection.cursor()
         c.execute('''CREATE TABLE IF NOT EXISTS cards (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -14,7 +14,7 @@ def create_database():
         knowledge INTEGER)''')
 
 def add_card_to_db(word, answer):
-    with sqlite3.connect('../database.db') as connection:
+    with sqlite3.connect('./database.db') as connection:
         c = connection.cursor()
         try:
             c.execute('INSERT INTO cards (word, answer, knowledge) VALUES (?, ?, ?)', (word, answer, 0))
@@ -23,14 +23,14 @@ def add_card_to_db(word, answer):
         return c.rowcount
 
 def num_of_cards_in_db() -> int:
-    with sqlite3.connect('../database.db') as connection:
+    with sqlite3.connect('./database.db') as connection:
         c = connection.cursor()
         c.execute("SELECT COUNT(*) FROM cards")
         result = c.fetchone()[0]
         return result
 
 def get_cards_from_db(num_of_cards: int, deck_sort = "Unknown") -> list[Flashcard]:
-    with sqlite3.connect('../database.db') as connection:
+    with sqlite3.connect('./database.db') as connection:
         c = connection.cursor()
         if deck_sort == "Unknown":
             c.execute('SELECT word, answer, knowledge FROM cards ORDER BY knowledge ASC LIMIT ?', (num_of_cards,))
@@ -46,6 +46,6 @@ def get_cards_from_db(num_of_cards: int, deck_sort = "Unknown") -> list[Flashcar
 
 
 def change_word_knowledge(word: str, amt: int):
-    with sqlite3.connect('../database.db') as connection:
+    with sqlite3.connect('./database.db') as connection:
         c = connection.cursor()
         c.execute("UPDATE cards SET knowledge = knowledge + ? WHERE word = ?", (amt, word))

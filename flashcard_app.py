@@ -70,7 +70,7 @@ class FlashcardApp:
 
     def new_deck(self):
         self.cards = get_cards_from_db(self.num_of_cards)
-        self.cards.append(Flashcard("Finished Pack","Finished Pack", -1))
+        self.cards.append(Flashcard("Finished Pack","Finished Pack", 999))
 
     def flip_card(self):
         self.current_card.flip_card()
@@ -99,9 +99,13 @@ class FlashcardApp:
         self.update_card()
 
     def resort_cards(self):
+        self.cards.pop()
+
         if self.deck_sort == "Unknown":
             self.cards.sort(key=lambda knowledge: self.current_card.knowledge)
         elif self.deck_sort == "Known":
             self.cards.sort(key=lambda knowledge: self.current_card.knowledge, reverse=True)
         else:
             random.shuffle(self.cards)
+
+        self.cards.append(Flashcard("Finished Pack", "Finished Pack", 999))
