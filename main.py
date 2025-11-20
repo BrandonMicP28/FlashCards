@@ -1,6 +1,7 @@
 import tkinter as tk
 from tkinter import ttk
-from homescreen import enter_homescreen
+
+from homescreen import HomescreenApp
 
 if __name__ == '__main__':
     root = tk.Tk()
@@ -11,6 +12,7 @@ if __name__ == '__main__':
 
     style.configure("flashcard.TButton", font=("Times New Roman", 20), padding=(40, 200, 40, 200))
 
-    enter_homescreen(root)
+    home = HomescreenApp(root)
+    home.setup_ui()
 
     root.mainloop()
