@@ -2,8 +2,11 @@ import tkinter as tk
 from tkinter import ttk
 
 from homescreen import HomescreenApp
+from util.database import create_database
 
 if __name__ == '__main__':
+    create_database()
+
     root = tk.Tk()
     style = ttk.Style()
     root.geometry("1280x720")

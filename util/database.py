@@ -49,6 +49,3 @@ def change_word_knowledge(word: str, amt: int):
     with sqlite3.connect('../database.db') as connection:
         c = connection.cursor()
         c.execute("UPDATE cards SET knowledge = knowledge + ? WHERE word = ?", (amt, word))
-
-
-create_database()
