@@ -45,7 +45,7 @@ def get_cards_from_db(num_of_cards: int, deck_sort = "Unknown") -> list[Flashcar
 
 
 
-def change_word_knowledge(word: str, amt: int) -> bool:
+def change_word_knowledge(word: str, amt: int):
     with sqlite3.connect('../database.db') as connection:
         c = connection.cursor()
         c.execute("UPDATE cards SET knowledge = knowledge + ? WHERE word = ?", (amt, word))
